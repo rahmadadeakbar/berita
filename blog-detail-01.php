@@ -1,66 +1,67 @@
-<?php 
-	include'header.php';
-	include'koneksi/koneksi.php';
-?>
+<?php include 'header.php'; ?>
 
-	<?php
-		$id_berita=$_GET['id_berita'];
-		$show=mysqli_query($koneksi,"SELECT * FROM berita WHERE id_berita='$id_berita'")or die(mysqli_error($show));
+<!-- Breadcrumb -->
+<div class="container">
+	<div class="headline bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+		<div class="f2-s-1 p-r-30 m-tb-6">
+			<a href="index.html" class="breadcrumb-item f1-s-3 cl9">
+				Home
+			</a>
 
-		$data=mysqli_fetch_assoc($show);
-	?>
-	<!-- Breadcrumb -->
-	<div class="container">
-		<div class="headline bg0 flex-wr-sb-c p-rl-20 p-tb-8">
-			<div class="f2-s-1 p-r-30 m-tb-6">
-				<a href="index.html" class="breadcrumb-item f1-s-3 cl9">
-					Home 
-				</a>
+			<a href="blog-list-01.html" class="breadcrumb-item f1-s-3 cl9">
+				Blog
+			</a>
 
-				<a href="blog-list-01.html" class="breadcrumb-item f1-s-3 cl9">
-					Blog 
-				</a>
+			<span class="breadcrumb-item f1-s-3 cl9">
+				Nulla non interdum metus non laoreet nisi tellus eget aliquam lorem pellentesque
+			</span>
+		</div>
 
-				<span class="breadcrumb-item f1-s-3 cl9">
-					<?php echo $data['judul']?>
-				</span>
-			</div>
-
-			<div class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
-				<input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" placeholder="Search">
-				<button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03">
-					<i class="zmdi zmdi-search"></i>
-				</button>
-			</div>
+		<div class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
+			<input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" placeholder="Search">
+			<button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03">
+				<i class="zmdi zmdi-search"></i>
+			</button>
 		</div>
 	</div>
+</div>
 
-	<!-- Content -->
-	<section class="bg0 p-b-140 p-t-10">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-10 col-lg-8 p-b-30">
-					<div class="p-r-10 p-r-0-sr991">
-						<!-- Blog Detail -->
+<!-- Content -->
+<section class="bg0 p-b-140 p-t-10">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-10 col-lg-8 p-b-30">
+				<div class="p-r-10 p-r-0-sr991">
+					<!-- Blog Detail -->
+					<?php
+					$id = $_GET['judul'];
+
+					$tampil = mysqli_query($koneksi, "SELECT * FROM postingan p LEFT JOIN kategori k USING(id_kategori) LEFT JOIN user u USING(id_user) WHERE id_postingan='$id'");
+
+					while ($data = mysqli_fetch_array($tampil)) {
+
+
+
+					?>
 						<div class="p-b-70">
 							<a href="#" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
-								<?php echo $data['tanggal']?>
+								<?= $data['nama_kategori'] ?>
 							</a>
 
 							<h3 class="f1-l-3 cl2 p-b-16 p-t-33 respon2">
-								<?php echo $data['judul']?>
+								<?= $data['judul'] ?>
 							</h3>
-							
+
 							<div class="flex-wr-s-s p-b-40">
 								<span class="f1-s-3 cl8 m-r-15">
 									<a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
-										by John Alvarado
+										<?= $data['username'] ?>
 									</a>
 
 									<span class="m-rl-3">-</span>
 
 									<span>
-										Feb 18
+										<?= $data['tgl_release'] ?>
 									</span>
 								</span>
 
@@ -74,21 +75,18 @@
 							</div>
 
 							<div class="wrap-pic-max-w p-b-30">
-								<img src="upload/<?php echo $data['foto']?>" alt="IMG">
+								<img src="admin/upload/postingan/<?= $data['foto'] ?>" alt="IMG">
 							</div>
 
 							<p class="f1-s-11 cl6 p-b-25">
-								<?php echo $data['konten']?>
+								<?= $data['kontent'] ?>
 							</p>
-
-							
-
 							<!-- Tag -->
 							<div class="flex-s-s p-t-12 p-b-15">
 								<span class="f1-s-12 cl5 m-r-8">
 									Tags:
 								</span>
-								
+
 								<div class="flex-wr-s-s size-w-0">
 									<a href="#" class="f1-s-12 cl8 hov-link1 m-r-15">
 										Streetstyle
@@ -105,7 +103,7 @@
 								<span class="f1-s-12 cl5 p-t-1 m-r-15">
 									Share:
 								</span>
-								
+
 								<div class="flex-wr-s-s size-w-0">
 									<a href="#" class="dis-block f1-s-13 cl0 bg-facebook borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03">
 										<i class="fab fa-facebook-f m-r-7"></i>
@@ -129,510 +127,512 @@
 								</div>
 							</div>
 						</div>
+					<?php } ?>
 
-						<!-- Leave a comment -->
-						<div>
-							<h4 class="f1-l-4 cl3 p-b-12">
-								Leave a Comment
-							</h4>
+					<!-- Leave a comment -->
+					<div>
+						<h4 class="f1-l-4 cl3 p-b-12">
+							Leave a Comment
+						</h4>
 
-							<p class="f1-s-13 cl8 p-b-40">
-								Your email address will not be published. Required fields are marked *
-							</p>
+						<p class="f1-s-13 cl8 p-b-40">
+							Your email address will not be published. Required fields are marked *
+						</p>
 
-							<form>
-								<textarea class="bo-1-rad-3 bocl13 size-a-15 f1-s-13 cl5 plh6 p-rl-18 p-tb-14 m-b-20" name="msg" placeholder="Comment..."></textarea>
+						<form>
+							<textarea class="bo-1-rad-3 bocl13 size-a-15 f1-s-13 cl5 plh6 p-rl-18 p-tb-14 m-b-20" name="msg" placeholder="Comment..."></textarea>
 
-								<input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text" name="name" placeholder="Name*">
+							<input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text" name="name" placeholder="Name*">
 
-								<input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text" name="email" placeholder="Email*">
+							<input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text" name="email" placeholder="Email*">
 
-								<input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text" name="website" placeholder="Website">
+							<input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text" name="website" placeholder="Website">
 
-								<button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
-									Post Comment
-								</button>
-							</form>
-						</div>
-					</div>
-				</div>
-				
-				<!-- Sidebar -->
-				<div class="col-md-10 col-lg-4 p-b-30">
-					<div class="p-l-10 p-rl-0-sr991 p-t-70">						
-						<!-- Category -->
-						<div class="p-b-60">
-							<div class="how2 how2-cl4 flex-s-c">
-								<h3 class="f1-m-2 cl3 tab01-title">
-									Category
-								</h3>
-							</div>
-
-							<ul class="p-t-35">
-								<li class="how-bor3 p-rl-4">
-									<a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
-										Fashion
-									</a>
-								</li>
-
-								<li class="how-bor3 p-rl-4">
-									<a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
-										Beauty
-									</a>
-								</li>
-
-								<li class="how-bor3 p-rl-4">
-									<a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
-										Street Style
-									</a>
-								</li>
-
-								<li class="how-bor3 p-rl-4">
-									<a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
-										Life Style
-									</a>
-								</li>
-
-								<li class="how-bor3 p-rl-4">
-									<a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
-										DIY & Crafts
-									</a>
-								</li>
-							</ul>
-						</div>
-
-						<!-- Archive -->
-						<div class="p-b-37">
-							<div class="how2 how2-cl4 flex-s-c">
-								<h3 class="f1-m-2 cl3 tab01-title">
-									Archive
-								</h3>
-							</div>
-
-							<ul class="p-t-32">
-								<li class="p-rl-4 p-b-19">
-									<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
-										<span>
-											July 2018
-										</span>
-
-										<span>
-											(9)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-rl-4 p-b-19">
-									<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
-										<span>
-											June 2018
-										</span>
-
-										<span>
-											(39)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-rl-4 p-b-19">
-									<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
-										<span>
-											May 2018
-										</span>
-
-										<span>
-											(29)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-rl-4 p-b-19">
-									<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
-										<span>
-											April  2018
-										</span>
-
-										<span>
-											(35)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-rl-4 p-b-19">
-									<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
-										<span>
-											March 2018
-										</span>
-
-										<span>
-											(22)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-rl-4 p-b-19">
-									<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
-										<span>
-											February 2018
-										</span>
-
-										<span>
-											(32)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-rl-4 p-b-19">
-									<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
-										<span>
-											January 2018
-										</span>
-
-										<span>
-											(21)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-rl-4 p-b-19">
-									<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
-										<span>
-											December 2017
-										</span>
-
-										<span>
-											(26)
-										</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-
-						<!-- Popular Posts -->
-						<div class="p-b-30">
-							<div class="how2 how2-cl4 flex-s-c">
-								<h3 class="f1-m-2 cl3 tab01-title">
-									Popular Post
-								</h3>
-							</div>
-
-							<ul class="p-t-35">
-								<li class="flex-wr-sb-s p-b-30">
-									<a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
-										<img src="images/popular-post-04.jpg" alt="IMG">
-									</a>
-
-									<div class="size-w-11">
-										<h6 class="p-b-4">
-											<a href="blog-detail-02.html" class="f1-s-5 cl3 hov-cl10 trans-03">
-												Donec metus orci, malesuada et lectus vitae
-											</a>
-										</h6>
-
-										<span class="cl8 txt-center p-b-24">
-											<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
-												Music
-											</a>
-
-											<span class="f1-s-3 m-rl-3">
-												-
-											</span>
-
-											<span class="f1-s-3">
-												Feb 18
-											</span>
-										</span>
-									</div>
-								</li>
-
-								<li class="flex-wr-sb-s p-b-30">
-									<a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
-										<img src="images/popular-post-05.jpg" alt="IMG">
-									</a>
-
-									<div class="size-w-11">
-										<h6 class="p-b-4">
-											<a href="blog-detail-02.html" class="f1-s-5 cl3 hov-cl10 trans-03">
-												Donec metus orci, malesuada et lectus vitae
-											</a>
-										</h6>
-
-										<span class="cl8 txt-center p-b-24">
-											<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
-												Game
-											</a>
-
-											<span class="f1-s-3 m-rl-3">
-												-
-											</span>
-
-											<span class="f1-s-3">
-												Feb 16
-											</span>
-										</span>
-									</div>
-								</li>
-
-								<li class="flex-wr-sb-s p-b-30">
-									<a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
-										<img src="images/popular-post-06.jpg" alt="IMG">
-									</a>
-
-									<div class="size-w-11">
-										<h6 class="p-b-4">
-											<a href="blog-detail-02.html" class="f1-s-5 cl3 hov-cl10 trans-03">
-												Donec metus orci, malesuada et lectus vitae
-											</a>
-										</h6>
-
-										<span class="cl8 txt-center p-b-24">
-											<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
-												Celebrity
-											</a>
-
-											<span class="f1-s-3 m-rl-3">
-												-
-											</span>
-
-											<span class="f1-s-3">
-												Feb 12
-											</span>
-										</span>
-									</div>
-								</li>
-							</ul>
-						</div>
-
-						<!-- Tag -->
-						<div>
-							<div class="how2 how2-cl4 flex-s-c m-b-30">
-								<h3 class="f1-m-2 cl3 tab01-title">
-									Tags
-								</h3>
-							</div>
-
-							<div class="flex-wr-s-s m-rl--5">
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Fashion
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Lifestyle
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Denim
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Streetstyle
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Crafts
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Magazine
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									News
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Blogs
-								</a>
-							</div>	
-						</div>
+							<button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
+								Post Comment
+							</button>
+						</form>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
 
-	<!-- Footer -->
-	<footer>
-		<div class="bg2 p-t-40 p-b-25">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-4 p-b-20">
-						<div class="size-h-3 flex-s-c">
-							<a href="index.html">
-								<img class="max-s-full" src="images/icons/logo-02.png" alt="LOGO">
-							</a>
+			<!-- Sidebar -->
+			<div class="col-md-10 col-lg-4 p-b-30">
+				<div class="p-l-10 p-rl-0-sr991 p-t-70">
+					<!-- Category -->
+					<div class="p-b-60">
+						<div class="how2 how2-cl4 flex-s-c">
+							<h3 class="f1-m-2 cl3 tab01-title">
+								Category
+							</h3>
 						</div>
 
-						<div>
-							<p class="f1-s-1 cl11 p-b-16">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tempor magna eget elit efficitur, at accumsan sem placerat. Nulla tellus libero, mattis nec molestie at, facilisis ut turpis. Vestibulum dolor metus, tincidunt eget odio
-							</p>
-
-							<p class="f1-s-1 cl11 p-b-16">
-								Any questions? Call us on (+1) 96 716 6879
-							</p>
-
-							<div class="p-t-15">
-								<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
-									<span class="fab fa-facebook-f"></span>
+						<ul class="p-t-35">
+							<li class="how-bor3 p-rl-4">
+								<a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
+									Fashion
 								</a>
+							</li>
 
-								<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
-									<span class="fab fa-twitter"></span>
+							<li class="how-bor3 p-rl-4">
+								<a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
+									Beauty
 								</a>
+							</li>
 
-								<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
-									<span class="fab fa-pinterest-p"></span>
+							<li class="how-bor3 p-rl-4">
+								<a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
+									Street Style
 								</a>
+							</li>
 
-								<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
-									<span class="fab fa-vimeo-v"></span>
+							<li class="how-bor3 p-rl-4">
+								<a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
+									Life Style
 								</a>
+							</li>
 
-								<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
-									<span class="fab fa-youtube"></span>
+							<li class="how-bor3 p-rl-4">
+								<a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
+									DIY & Crafts
 								</a>
-							</div>
-						</div>
+							</li>
+						</ul>
 					</div>
 
-					<div class="col-sm-6 col-lg-4 p-b-20">
-						<div class="size-h-3 flex-s-c">
-							<h5 class="f1-m-7 cl0">
-								Popular Posts
-							</h5>
+					<!-- Archive -->
+					<div class="p-b-37">
+						<div class="how2 how2-cl4 flex-s-c">
+							<h3 class="f1-m-2 cl3 tab01-title">
+								Archive
+							</h3>
 						</div>
 
-						<ul>
-							<li class="flex-wr-sb-s p-b-20">
-								<a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-									<img src="images/popular-post-01.jpg" alt="IMG">
+						<ul class="p-t-32">
+							<li class="p-rl-4 p-b-19">
+								<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
+									<span>
+										July 2018
+									</span>
+
+									<span>
+										(9)
+									</span>
+								</a>
+							</li>
+
+							<li class="p-rl-4 p-b-19">
+								<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
+									<span>
+										June 2018
+									</span>
+
+									<span>
+										(39)
+									</span>
+								</a>
+							</li>
+
+							<li class="p-rl-4 p-b-19">
+								<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
+									<span>
+										May 2018
+									</span>
+
+									<span>
+										(29)
+									</span>
+								</a>
+							</li>
+
+							<li class="p-rl-4 p-b-19">
+								<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
+									<span>
+										April 2018
+									</span>
+
+									<span>
+										(35)
+									</span>
+								</a>
+							</li>
+
+							<li class="p-rl-4 p-b-19">
+								<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
+									<span>
+										March 2018
+									</span>
+
+									<span>
+										(22)
+									</span>
+								</a>
+							</li>
+
+							<li class="p-rl-4 p-b-19">
+								<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
+									<span>
+										February 2018
+									</span>
+
+									<span>
+										(32)
+									</span>
+								</a>
+							</li>
+
+							<li class="p-rl-4 p-b-19">
+								<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
+									<span>
+										January 2018
+									</span>
+
+									<span>
+										(21)
+									</span>
+								</a>
+							</li>
+
+							<li class="p-rl-4 p-b-19">
+								<a href="#" class="flex-wr-sb-c f1-s-10 text-uppercase cl2 hov-cl10 trans-03">
+									<span>
+										December 2017
+									</span>
+
+									<span>
+										(26)
+									</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+
+					<!-- Popular Posts -->
+					<div class="p-b-30">
+						<div class="how2 how2-cl4 flex-s-c">
+							<h3 class="f1-m-2 cl3 tab01-title">
+								Popular Post
+							</h3>
+						</div>
+
+						<ul class="p-t-35">
+							<li class="flex-wr-sb-s p-b-30">
+								<a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
+									<img src="images/popular-post-04.jpg" alt="IMG">
 								</a>
 
-								<div class="size-w-5">
-									<h6 class="p-b-5">
-										<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
+								<div class="size-w-11">
+									<h6 class="p-b-4">
+										<a href="blog-detail-02.html" class="f1-s-5 cl3 hov-cl10 trans-03">
 											Donec metus orci, malesuada et lectus vitae
 										</a>
 									</h6>
 
-									<span class="f1-s-3 cl6">
-										Feb 17
+									<span class="cl8 txt-center p-b-24">
+										<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+											Music
+										</a>
+
+										<span class="f1-s-3 m-rl-3">
+											-
+										</span>
+
+										<span class="f1-s-3">
+											Feb 18
+										</span>
 									</span>
 								</div>
 							</li>
 
-							<li class="flex-wr-sb-s p-b-20">
-								<a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-									<img src="images/popular-post-02.jpg" alt="IMG">
+							<li class="flex-wr-sb-s p-b-30">
+								<a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
+									<img src="images/popular-post-05.jpg" alt="IMG">
 								</a>
 
-								<div class="size-w-5">
-									<h6 class="p-b-5">
-										<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-											Lorem ipsum dolor sit amet, consectetur
+								<div class="size-w-11">
+									<h6 class="p-b-4">
+										<a href="blog-detail-02.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+											Donec metus orci, malesuada et lectus vitae
 										</a>
 									</h6>
 
-									<span class="f1-s-3 cl6">
-										Feb 16
+									<span class="cl8 txt-center p-b-24">
+										<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+											Game
+										</a>
+
+										<span class="f1-s-3 m-rl-3">
+											-
+										</span>
+
+										<span class="f1-s-3">
+											Feb 16
+										</span>
 									</span>
 								</div>
 							</li>
 
-							<li class="flex-wr-sb-s p-b-20">
-								<a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-									<img src="images/popular-post-03.jpg" alt="IMG">
+							<li class="flex-wr-sb-s p-b-30">
+								<a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
+									<img src="images/popular-post-06.jpg" alt="IMG">
 								</a>
 
-								<div class="size-w-5">
-									<h6 class="p-b-5">
-										<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-											Suspendisse dictum enim quis imperdiet auctor
+								<div class="size-w-11">
+									<h6 class="p-b-4">
+										<a href="blog-detail-02.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+											Donec metus orci, malesuada et lectus vitae
 										</a>
 									</h6>
 
-									<span class="f1-s-3 cl6">
-										Feb 15
+									<span class="cl8 txt-center p-b-24">
+										<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+											Celebrity
+										</a>
+
+										<span class="f1-s-3 m-rl-3">
+											-
+										</span>
+
+										<span class="f1-s-3">
+											Feb 12
+										</span>
 									</span>
 								</div>
 							</li>
 						</ul>
 					</div>
 
-					<div class="col-sm-6 col-lg-4 p-b-20">
-						<div class="size-h-3 flex-s-c">
-							<h5 class="f1-m-7 cl0">
-								Category
-							</h5>
+					<!-- Tag -->
+					<div>
+						<div class="how2 how2-cl4 flex-s-c m-b-30">
+							<h3 class="f1-m-2 cl3 tab01-title">
+								Tags
+							</h3>
 						</div>
 
-						<ul class="m-t--12">
-							<li class="how-bor1 p-rl-5 p-tb-10">
-								<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-									Fashion (22)
-								</a>
-							</li>
+						<div class="flex-wr-s-s m-rl--5">
+							<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+								Fashion
+							</a>
 
-							<li class="how-bor1 p-rl-5 p-tb-10">
-								<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-									Technology (29)
-								</a>
-							</li>
+							<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+								Lifestyle
+							</a>
 
-							<li class="how-bor1 p-rl-5 p-tb-10">
-								<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-									Street Style (15)
-								</a>
-							</li>
+							<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+								Denim
+							</a>
 
-							<li class="how-bor1 p-rl-5 p-tb-10">
-								<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-									Life Style (28)
-								</a>
-							</li>
+							<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+								Streetstyle
+							</a>
 
-							<li class="how-bor1 p-rl-5 p-tb-10">
-								<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-									DIY & Crafts (16)
-								</a>
-							</li>
-						</ul>
+							<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+								Crafts
+							</a>
+
+							<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+								Magazine
+							</a>
+
+							<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+								News
+							</a>
+
+							<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+								Blogs
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+</section>
 
-		<div class="bg11">
-			<div class="container size-h-4 flex-c-c p-tb-15">
-				<span class="f1-s-1 cl0 txt-center">
-					Copyright © 2018 
+<!-- Footer -->
+<footer>
+	<div class="bg2 p-t-40 p-b-25">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 p-b-20">
+					<div class="size-h-3 flex-s-c">
+						<a href="index.html">
+							<img class="max-s-full" src="images/icons/logo-02.png" alt="LOGO">
+						</a>
+					</div>
 
-					<a href="#" class="f1-s-1 cl10 hov-link1"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-				</span>
+					<div>
+						<p class="f1-s-1 cl11 p-b-16">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tempor magna eget elit efficitur, at accumsan sem placerat. Nulla tellus libero, mattis nec molestie at, facilisis ut turpis. Vestibulum dolor metus, tincidunt eget odio
+						</p>
+
+						<p class="f1-s-1 cl11 p-b-16">
+							Any questions? Call us on (+1) 96 716 6879
+						</p>
+
+						<div class="p-t-15">
+							<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
+								<span class="fab fa-facebook-f"></span>
+							</a>
+
+							<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
+								<span class="fab fa-twitter"></span>
+							</a>
+
+							<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
+								<span class="fab fa-pinterest-p"></span>
+							</a>
+
+							<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
+								<span class="fab fa-vimeo-v"></span>
+							</a>
+
+							<a href="#" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
+								<span class="fab fa-youtube"></span>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-6 col-lg-4 p-b-20">
+					<div class="size-h-3 flex-s-c">
+						<h5 class="f1-m-7 cl0">
+							Popular Posts
+						</h5>
+					</div>
+
+					<ul>
+						<li class="flex-wr-sb-s p-b-20">
+							<a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
+								<img src="images/popular-post-01.jpg" alt="IMG">
+							</a>
+
+							<div class="size-w-5">
+								<h6 class="p-b-5">
+									<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
+										Donec metus orci, malesuada et lectus vitae
+									</a>
+								</h6>
+
+								<span class="f1-s-3 cl6">
+									Feb 17
+								</span>
+							</div>
+						</li>
+
+						<li class="flex-wr-sb-s p-b-20">
+							<a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
+								<img src="images/popular-post-02.jpg" alt="IMG">
+							</a>
+
+							<div class="size-w-5">
+								<h6 class="p-b-5">
+									<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
+										Lorem ipsum dolor sit amet, consectetur
+									</a>
+								</h6>
+
+								<span class="f1-s-3 cl6">
+									Feb 16
+								</span>
+							</div>
+						</li>
+
+						<li class="flex-wr-sb-s p-b-20">
+							<a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
+								<img src="images/popular-post-03.jpg" alt="IMG">
+							</a>
+
+							<div class="size-w-5">
+								<h6 class="p-b-5">
+									<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
+										Suspendisse dictum enim quis imperdiet auctor
+									</a>
+								</h6>
+
+								<span class="f1-s-3 cl6">
+									Feb 15
+								</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-sm-6 col-lg-4 p-b-20">
+					<div class="size-h-3 flex-s-c">
+						<h5 class="f1-m-7 cl0">
+							Category
+						</h5>
+					</div>
+
+					<ul class="m-t--12">
+						<li class="how-bor1 p-rl-5 p-tb-10">
+							<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
+								Fashion (22)
+							</a>
+						</li>
+
+						<li class="how-bor1 p-rl-5 p-tb-10">
+							<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
+								Technology (29)
+							</a>
+						</li>
+
+						<li class="how-bor1 p-rl-5 p-tb-10">
+							<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
+								Street Style (15)
+							</a>
+						</li>
+
+						<li class="how-bor1 p-rl-5 p-tb-10">
+							<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
+								Life Style (28)
+							</a>
+						</li>
+
+						<li class="how-bor1 p-rl-5 p-tb-10">
+							<a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
+								DIY & Crafts (16)
+							</a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
-	</footer>
-
-	<!-- Back to top -->
-	<div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top">
-			<span class="fas fa-angle-up"></span>
-		</span>
 	</div>
 
+	<div class="bg11">
+		<div class="container size-h-4 flex-c-c p-tb-15">
+			<span class="f1-s-1 cl0 txt-center">
+				Copyright © 2018
 
-<!--===============================================================================================-->	
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+				<a href="#" class="f1-s-1 cl10 hov-link1">Colorlib.</a>
+
+				All rights reserved.
+			</span>
+		</div>
+	</div>
+</footer>
+
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
+	<span class="symbol-btn-back-to-top">
+		<span class="fas fa-angle-up"></span>
+	</span>
+</div>
+
+
 <!--===============================================================================================-->
-	<script src="vendor/animsition/js/animsition.min.js"></script>
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+<script src="vendor/bootstrap/js/popper.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="js/main.js"></script>
 
 </body>
+
 </html>
