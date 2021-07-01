@@ -9,6 +9,7 @@ if ($_SESSION['level'] != ("admin" || "operator" || "autor") || empty($_SESSION[
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,7 +43,13 @@ if ($_SESSION['level'] != ("admin" || "operator" || "autor") || empty($_SESSION[
             display: -webkit-flex;
             display: flex;
         }
+
+        .note-popover.popover {
+            max-width: none;
+            display: none;
+        }
     </style>
+
 </head>
 
 <body>
