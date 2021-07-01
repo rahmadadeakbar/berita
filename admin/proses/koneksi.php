@@ -2,7 +2,7 @@
 $localhost = 'localhost';
 $user = 'root';
 $password = '';
-$db = 'web_berita';
+$db = 'berita';
 
 $koneksi = mysqli_connect($localhost, $user, $password, $db);
 if ($koneksi) {
